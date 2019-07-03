@@ -37,31 +37,12 @@ function start() {
         message: "What is the id of the product you would like to buy?"
       })
       .then(function(answer) {
-      // selecting all from the products table where item_id = user ans
-      connection.query("SELECT * FROM products WHERE ?", { item_id: answer.productid }, function(err, res) {
+        var query= "SELECT item_id,product_name,price,stock_quantity FROM products WHERE item_it D ?";
+        connection.query(query, [ answer.item_id], function(err, res) {
           for (var i = 0; i < res.length; i++) {
             console.log("ID: " + res[i].item_id + " || Product: " + res[i].product_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity);
           }
-          buyitem();
+        //   runSearch();
         });
       });
-  }
-
-  function buyitem() {
-    inquirer
-    .prompt({
-      name: "buying", 
-      type:"input",
-      message: "How many units would you like to buy of this item?"
-    })
-    .then(function(answer) {
-      connection.query("SELECT stockquantity FROM products WHERE ?", {stock_quantity: answer.buying}, function(err,res) {
-        if(answer  <= res.stock_quantity){
-          console.log("Take it ALL !");
-        
-        }else{
-          console.log("INSUFFIENT QUANTITY!")
-        }
-      })
-    })
   }
